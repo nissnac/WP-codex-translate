@@ -12,7 +12,7 @@
 __TOC__
 Permalinks are the permanent URLs to your individual weblog posts, as well as categories and other lists of weblog postings. A permalink is what another weblogger will use to link to your article (or section), or how you might send a link to your story in an e-mail message. The URL to each post should be permanent, and never change — hence ''perma''link.
 
-Les permaliens sont les adresses (URL) permanentes de vos articles, ainsi que des catégories, archives, et autres pages spéciales. Le permalien est ce permet à un autre auteur de référer à l'un de vos articles, ou d'insérer un lien vers votre article dans un courriel. L'adresse URL de chaque article devrait être permanente, et ne devrait jamais changer - d'où le terme de "perma"-lien.
+Les permaliens sont les adresses (URL) permanentes de vos articles, ainsi que des catégories, archives, et autres pages spéciales. Le permalien permet à un autre site de référer à l'un de vos articles, ou de pointer vers votre article depuis un courriel. L'adresse URL de chaque article devrait être permanente, et ne devrait jamais changer - d'où le terme de "perma"-lien.
 
 == Les types de permaliens ==
 
@@ -33,21 +33,19 @@ Les "jolis permaliens" sont disponibles sous ces environnements:
 *  Microsoft IIS 6+ en utilisant [http://www.kylecaulfield.com/permalink-for-wordpress-iis-6-mod_rewrite-fixed-free ASAPI_Rewrite]
 *  Lighttpd en utilisant [http://chrisjohnston.org/2009/setting-up-a-wordpress-blog-on-lighttpd a 404 handler] ou [http://blog.nix.is/lighttpd-rewrite-rules-for-wordpress mod_rewrite] (voir [[Using_Permalinks#See_Also|See Also]])
 
-=== PATHINFO: "Presque beau" ===
+=== PATHINFO: "Presque joli" ===
 
 Avec <tt>PATHINFO</tt>, les liens ressemblent à ceux de <tt>mod_rewrite</tt> à une exception près: ils sont précédés d'une partie <tt>/index.php</tt>, de cette manière: 
 
 <pre>http://exemple.fr/index.php/2012/12/30/mon-article/</pre>
 
-Otherwise, they are the same as the "pretty" <tt>mod_rewrite</tt> permalinks, and are similarly flexible. Anything that <tt>mod_rewrite</tt> permalinks can do, <tt>PATHINFO</tt> permalinks can do, with the help of that <tt>/index.php</tt> part.
+Mis à part ce détail, ils sont identiques aux "jolis" permaliens en <tt>mod_rewrite</tt>, et offrent la même flexibilité.
 
-There is a helpful [http://www.askapache.com/htaccess/rewriterule-viewer-plugin.html plugin] that displays the type of permalinks being used and detailed information on the internal rewrite rules used by WordPress.
-
-== Choosing your permalink structure ==
+== Choisir votre structure de permaliens ==
 
 In the Settings &rarr; Permalinks panel (Options &rarr; Permalinks before WordPress 2.5), you can choose one of the "common" structures or enter your own in the "Custom structure" field using the <i>structure tags</i>.
 
-<strong>Please note:</strong>
+<strong>À noter:</strong>
 You never, ever put your site url in the permalinks slot. You must use one of the structure tags, or a combination of tags only.
 
 To activate PATHINFO permalinks, start your permalink structure with <tt>index.php/</tt>.

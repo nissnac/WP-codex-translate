@@ -1,0 +1,374 @@
+{{Languages|
+{{en|Using Permalinks}}
+{{pt-br|Usando Links permanentes}}
+{{it|Using Permalink}}
+{{ja|パーマリンクの使い方}}
+{{ko|Using Permalinks}}
+{{th|Using Permalinks}}
+{{zh-cn|使用固定链接}}
+{{zh-tw|使用固定連結}}
+}}
+
+__TOC__
+Permalinks are the permanent URLs to your individual weblog posts, as well as categories and other lists of weblog postings. A permalink is what another weblogger will use to link to your article (or section), or how you might send a link to your story in an e-mail message. The URL to each post should be permanent, and never change — hence ''perma''link.
+
+== Permalink Types ==
+
+There are three basic types of WordPress permalinks:
+
+=== mod_rewrite: "Pretty Permalinks" ===
+
+Using mod_rewrite or lighttpd you can produce much nicer permalinks (see [[Introduction_to_Blogging#Pretty_Permalinks|Pretty Permalinks]]). There are many different formats, but the most common, and most versatile looks like
+
+<pre>http://example.com/2012/post-name/</pre>
+or
+<pre>http://example.com/2012/12/30/post-name</pre>
+
+Pretty permalinks are available under:
+
+*  Apache web server with the <tt>mod_rewrite</tt> module
+*  Microsoft IIS 7+ web server with the URL Rewrite 1.1+ module and PHP 5 running as FastCGI
+*  Microsoft IIS 6+ using [http://www.kylecaulfield.com/permalink-for-wordpress-iis-6-mod_rewrite-fixed-free ASAPI_Rewrite]
+*  Lighttpd using [http://chrisjohnston.org/2009/setting-up-a-wordpress-blog-on-lighttpd a 404 handler] or [http://blog.nix.is/lighttpd-rewrite-rules-for-wordpress mod_rewrite] (see [[Using_Permalinks#See_Also|See Also]])
+
+=== PATHINFO: "Almost Pretty" ===
+
+<tt>PATHINFO</tt> permalinks look very much like <tt>mod_rewrite</tt> permalinks but for one exception: they have <tt>/index.php</tt> inserted before them, like so: 
+
+<pre>http://example.com/index.php/yyyy/mm/dd/post-name/</pre>
+
+Otherwise, they are the same as the "pretty" <tt>mod_rewrite</tt> permalinks, and are similarly flexible. Anything that <tt>mod_rewrite</tt> permalinks can do, <tt>PATHINFO</tt> permalinks can do, with the help of that <tt>/index.php</tt> part.
+
+There is a helpful [http://www.askapache.com/htaccess/rewriterule-viewer-plugin.html plugin] that displays the type of permalinks being used and detailed information on the internal rewrite rules used by WordPress.
+
+== Choosing your permalink structure ==
+
+In the Settings &rarr; Permalinks panel (Options &rarr; Permalinks before WordPress 2.5), you can choose one of the "common" structures or enter your own in the "Custom structure" field using the <i>structure tags</i>.
+
+<strong>Please note:</strong>
+You never, ever put your site url in the permalinks slot. You must use one of the structure tags, or a combination of tags only.
+
+To activate PATHINFO permalinks, start your permalink structure with <tt>index.php/</tt>.
+
+[[File:permalink-settings.png‎]]
+
+=== Structure Tags ===
+
+<strong>Please note:</strong>
+ You never, ever put your site url in the permalinks slot. You must use one of the structure tags, or a combination of tags only. 
+
+You can use these tags to customize your "Pretty" or "Almost Pretty" permalinks. A few hints:
+* Make sure to end your structure with either <tt>%post_id%</tt> or <tt>%postname%</tt> (e.g. <tt>/%year%/%monthnum%/%day%/%postname%/</tt>) so that each permalink points to an individual post.
+
+; %year%
+: The year of the post, four digits, for example <tt>2004</tt>
+
+; %monthnum%
+: Month of the year, for example <tt>05</tt>
+
+; %day%
+: Day of the month, for example <tt>28</tt>
+
+; %hour%
+: Hour of the day, for example <tt>15</tt>
+
+; %minute%
+: Minute of the hour, for example <tt>43</tt>
+
+; %second%
+: Second of the minute, for example <tt>33</tt>
+
+; %post_id%
+: The unique ID # of the post, for example <tt>423</tt>
+
+; %postname%
+: A sanitized version of the title of the post (<i>post slug</i> field on Edit Post/Page panel). So &#8220;This Is A Great Post!&#8221; becomes <tt>this-is-a-great-post</tt> in the URI.
+
+; %category%
+: A sanitized version of the category name (<i>category slug</i> field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI. 
+
+; %author%
+: A sanitized version of the author name.
+
+=== Category base and Tag base ===
+
+The <i>Category base</i> and <i>Tag base</i> are prefixes used in URLs for category and tag archives, which look like this:
+
+  example.net/wp/<var>category_base</var>/<var>category_name</var>
+  example.net/wp/<var>tag_base</var>/<var>tag_name</var>
+
+The default values for these are <tt>category</tt> and <tt>tag</tt>. You can change them, but you can't remove them from the URLs altogether.
+
+Custom permalinks work on most systems without any problems, but there are still some conditions where problems occur.
+
+=== Using <tt>%category%</tt> with multiple categories on a post ===
+
+When you assign multiple categories to a post, only one can show up in the permalink. This will be the lowest numbered category (see [[Manage_Categories_SubPanel|Manage Categories]]). The post will still be accessible through all the categories as normal.
+
+== Using "Pretty" permalinks ==
+
+Requirements:
+
+*	Apache web server with the mod_rewrite module installed
+*	In WordPress's home directory,
+**		The [http://httpd.apache.org/docs/current/mod/core.html#options FollowSymLinks option] enabled
+**		[http://httpd.apache.org/docs/current/mod/core.html#allowoverride <tt>FileInfo</tt> directives] allowed (e.g. <code>AllowOverride FileInfo</code> or <code>AllowOverride All</code>) 
+**		An <tt>.htaccess</tt> file (if this file is missing, WordPress will try to create it when you activate "pretty" permalinks)	
+**		If you want WordPress to update the <tt>.htaccess</tt> file automatically, WordPress will need write access to the file.
+
+* For lighttpd, see [[Using_Permalinks#See_Also|below]].
+
+* Mac Users running WordPress locally must edit their httpd.conf file editing the AllowOverride line to read <em>AllowOverride All</em> in the <em>Directory "/Library/WebServer/Documents"</em> host instructions.  For Mac OS X 10.5.x and up this file is located in <tt>/private/etc/apache2/users/[your-username].conf</tt>, otherwise it is located at <tt>/etc/httpd/httpd.conf</tt>.
+
+When you create or update a "pretty" permalink structure, WordPress will generate rewrite rules and attempt to insert them into the proper <tt>.htaccess</tt> file. If it can't, it will say something like <tt>You should update your .htaccess now</tt> and print out the rules for you to copy and paste into the file (put them at the end).
+
+In WordPress 2.0+ versions, you'll probably need to do this only once, because WordPress does the rewriting internally. If you ever move your WordPress home directory (''Site address''), you'll need to repeat this step.
+
+WordPress will play nice with an existing <tt>.htaccess</tt> and will not delete any existing RewriteRules or other directives. If you have other <tt>mod_rewrite</tt> rules, put yours before WordPress's.
+
+=== Where's my <tt>.htaccess</tt> file? ===
+
+WordPress's <tt>index.php</tt> and <tt>.htaccess</tt> files should be together in the directory indicated by the ''Site address (URL)'' setting on your General Options page. Since the name of the file begins with a dot, the file may not be visible through an FTP client unless you change the preferences of the FTP tool to show all files, including the hidden files.
+Some hosts (e.g. Godaddy) may not show or allow you to edit .htaccess if you install WordPress through the Godaddy Hosting Connection installation.
+
+=== Creating and editing (<tt>.htaccess</tt>) ===
+
+If you do not already have a .htaccess file, create one. If you have shell or ssh access to the server, a simple <code>touch .htaccess</code> command will create the file. If you are using FTP to transfer files, create a file on your local computer, call it <tt>1.htaccess</tt>, upload it to the root of your WordPress folder, and then rename it to <tt>.htaccess</tt>.
+
+You can edit the <tt>.htaccess</tt> file by FTP, shell, or (possibly) your host's [[Using cPanel|control panel]].
+
+The following permalink rewrite code should be included in your .htaccess file (since WordPress [[Version 3.0|3.0]]):
+
+<pre id="htaccess_sample"># BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+# END WordPress</pre>
+
+If your <tt>.htaccess</tt> file contains errors that bring down your site ("Internal Server Error (500)"), you will need to use FTP or your host's [[Using cPanel|control panel]] to delete the rogue <tt>.htaccess</tt> file.
+
+=== Automatically updating <tt>.htaccess</tt>===
+
+If WordPress can't update your <tt>.htaccess</tt> file automatically, it will tell you something like <tt>If your .htaccess file were writable, we could do this automatically, but it isn’t…</tt> near the bottom of the Settings &rarr; Permalinks panel.
+
+If you want to let WordPress do this, you'll need to [[Changing_File_Permissions|give WordPress write access to the .htaccess file]]. The exact permissions necessary depend on your server setup. Try adding write permissions for the owner, then group, then world, testing after each change; once WordPress has edited the file successfully, don't add any further write permissions.
+
+After applying the permalinks, you should change the permissions to something stronger like 660 or 644 to prevent others on the server from potentially having access to it.
+
+== Permalinks without <tt>mod_rewrite</tt> ==
+
+"Pretty" permalinks usually require <tt>[[Glossary#mod_rewrite|mod_rewrite]]</tt>, and IIS (common on Windows servers) does not support <tt>mod_rewrite</tt>. (If you are using Apache 2.0.54, on Windows, <tt>mod_rewrite</tt> may work, provided it is enabled in <tt>apache\conf\httpd.conf</tt>.) 
+
+If you are using IIS 7 and have admin rights on your server, you can use Microsoft's [http://learn.iis.net/page.aspx/460/using-url-rewrite-module/ URL Rewrite Module] instead.  Though not completely compatible with <tt>mod_rewrite</tt>, it does support WordPress's pretty permalinks.  Once installed, open the <tt>web.config</tt> file in the WordPress folder and add the following rule to the <tt>system.webServer</tt> element
+
+<pre>
+<rewrite>
+    <rules>
+        <rule name="Main Rule" stopProcessing="true">
+            <match url=".*" />
+            <conditions logicalGrouping="MatchAll">
+                <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
+                <add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
+            </conditions>
+            <action type="Rewrite" url="index.php/{R:0}" />
+        </rule>
+    </rules>
+</rewrite>
+</pre>
+
+There's a [http://learn.iis.net/page.aspx/466/enabling-pretty-permalinks-in-wordpress/ full installation guide] on the IIS site.  The module is available for [http://www.iis.net/downloads/1692/ItemPermaLink.ashx x64] and [http://www.iis.net/downloads/1691/ItemPermaLink.ashx x86] systems.
+
+If this isn't an option, you can try PATHINFO permalinks; put <tt>index.php/</tt> at the start of your custom permalink structure:
+
+  /index.php/%year%/%monthnum%/%day%/%postname%/
+
+This option may not always work, especially in cases of WordPress running on IIS 6.  To make this option work on IIS, add these 2 lines to a php.ini file and store that file in your webroot :
+
+  cgi.fix_pathinfo = 1
+  cgi.force_redirect = 0
+
+Another solution exists using IIS' custom 404 redirects. It requires that your web host allows you to add a custom 404 redirect, but it doesn't require you to install any 3rd party mod_rewrite software and it also doesn't require that your permalink structure begin with <tt>/index.php/</tt>.
+
+== Fixing Permalink Problems ==
+
+=== Fixing <tt>.htaccess</tt> Generation Issues ===
+
+If your installation of WordPress does not generate a .htaccess file or if it does not write the new rules onto your existing .htaccess file then there are a couple reasons that could be causing this. Work step by step and continue to the next step only if the previous step does not work.
+
+
+# '''Change File Permissions:'''  You must [[Changing File Permissions|<tt>chmod</tt>]] the <tt>.htaccess</tt> file to 666 to edit it with the WordPress [[Editing_Files#Using_the_Built-in_Editor|template editor]], but this is not recommended, since if you do that, any user of your blog, who can edit templates will be able to edit it. You can change the permissions to 660 to make it server-writable, which again will have the same limitation.
+# '''Server Blockage:''' Your host might have blocked the <tt>SERVER_SOFTWARE</tt> variable and this will cause WordPress' .htaccess generation to fail. If you are sure that your server is running Apache, you can force WordPress to believe that your server is running Apache by changing your <tt>wp-includes/vars.php</tt> file. Follow the steps below to implement these changes.
+#* Open the <tt>wp-includes/vars.php</tt> file using the built in file editor in your WordPress Admin panel. To navigate to this panel, login to WordPress, click on "Manage", then on "Files", scroll to the bottom and type in <tt>wp-includes/vars.php</tt> into the text box under the "Other Files" title. Look for <pre>$is_apache = strstr($_SERVER['SERVER_SOFTWARE'], 'Apache') ? 1 : 0;</pre> and replace it with <pre>// $is_apache = strstr($_SERVER['SERVER_SOFTWARE'], 'Apache') ? 1 : 0;</pre>
+#* Add a new line under <pre>// $is_apache = strstr($_SERVER['SERVER_SOFTWARE'], 'Apache') ? 1 : 0;</pre> and type in <pre>$is_apache = 1;</pre>
+# '''Users of XAMPP (Windows):''' Some versions of [http://www.apachefriends.org/en/xampp.html XAMPP] do not enable <tt>mod_rewrite</tt> by default (though it ''is'' compiled in Apache). To enable it — and thus enable WordPress to write the <tt>.htaccess</tt> file needed to create pretty permalinks — you must open <tt>apache/conf/httpd.conf</tt> and uncomment the line <tt>LoadModule rewrite_module modules/mod_rewrite.so</tt> (i.e., delete the hash/pound sign at the front of the line).
+# '''Users of WAMP (Windows):''' Some versions of WAMP (all versions?) do not enable <tt>mod_rewrite</tt> or permit following SymLinks by default.  To enable the required functionality navigate to the <tt>apache/conf/httpd.conf</tt> file, open with a text editor and uncomment the line <tt>LoadModule rewrite_module modules/mod_rewrite.so</tt> (i.e., delete the hash/pound sign at the front of the line).  Then further down in the same file there is a section that starts with the line <tt>"Options FollowSymlinks"</tt>.  Change the second line in that section from <tt>"AllowOverride none"</tt> to <tt>AllowOverride all</tt>.  Save edited httpd.conf and restart all WAMP modules.  Your permalinks should now work.
+
+== Permalinks, .htaccess, and MS Frontpage ==
+
+A note about Microsoft Frontpage: many servers (shared and dedicated) maintained and built by various hosting companies come with <tt>mod_frontpage</tt> compiled with the apache build, and in many cases with the Frontpage Server Extensions installed, on each virtual server. This is more common than not, many/most binary distributions used in the server build process at most hosting companies these days include both mod_fronpage and the server extensions. Even if you're not using Frontpage, because of the way that the extensions interact with apache (and the <tt>httpd.conf</tt> file) you'll likely get something like a 500 error or blank white page when trying to view your WP install (although the admin panel may operate correctly) simply because <tt>extensions/mod_frontpage</tt> exist on your server.  
+
+WordPress will operate correctly with the Frontpage Extensions
+installed, however permalinks will not function at all and '''ANY''' change to the permalinks section from the 
+WordPress admin interface will cause corruption of the Frontpage server extensions due to the addition of the 
+<tt>mod_rewrite</tt> rules to the .htaccess file. ''There is however now a fix for this situation.''
+
+=== Quick Fixes, Frontpage or Permalinks ===
+
+'''Frontpage Extensions Fix:''' If you don't care about permalinks and just want to make the MS Frontpage server extensions work again, simply edit your .htaccess file and remove the WordPress section with the rewrite rules. 
+
+'''To Use Permalinks:''' If you don't care about Frontpage(but your hosting company has the extensions installed)
+
+You will need to remove (or have your hosting company do so) the MS Frontpage server extensions, or simply edit the .htaccess file to removed all of the Frontpage Lines, leaving only the WordPress mod_rewrite code. 
+
+=== Using FrontPage AND Permalinks Together ===
+
+'''Finally, A solution.'''
+
+There have been a number of threads on this issue in the support forums, and until now, no solution to the problem.
+
+Normally, on a Unix server with the Microsoft FrontPage Server extensions installed WordPress works just fine and you are able to edit and publish pages (with [http://www.microsoft.com/frontpage/ Microsoft FrontPage]) &mdash; '''until''' &mdash; you make a change to the permalinks (for example to the date based kind that I like /2005/04/etc). I often suggest that type of URI to folks asking about permalinks etc, as that is the method recommended by the w3c (see http://www.w3.org/Provider/Style/URI ). 
+
+Now, the problem is that FrontPage uses the .htaccess file (which the WordPress mod_rewrite rules must access) for its "publishing" and "web authoring" configuration. As soon as the WordPress mod_rewrite code is added to the file, two things happen &mdash; the permalinks don't work and the Frontpage Server extensions become corrupt.
+
+I have tried countless ways to get around this, including trying to use rewrite rules that "ignore" the <tt>%{HTTP_USERAGENT)%</tt> used by FrontPage, to using a second AccessFilename <tt>.wpaccess</tt> to the <tt>httpd.conf</tt> file, and a host of other things, and nothing worked to allow use of FrontPage ''and'' management and use of permalinks in WordPress at the same time.
+
+The solution is actually simple, and I figured it out by accident.
+
+If you are using, or wish to use FrontPage (or if your hosting package is pre-configured that way) along with WordPress, you'll need to take the following simple steps on your server or have your hosting company do them for you.
+
+Microsoft FrontPage creates the following directory
+<pre>_vti_bin</pre>
+
+Nested within that it creates both <pre>_vti_adm</pre> and <pre>_vti_aut</pre>
+
+In addition to in your site (or WordPress) root folder in all of those directories you will find additional <tt>.htaccess</tt> files.
+
+In all three of these directories AND in the root directory, at the top of ALL of the <tt>.htaccess</tt> files you simply need to add one line: 
+<pre>
+Options +FollowSymlinks
+</pre>
+There may or may not already be a line in each like 
+<pre>Options None</pre> 
+Edit and save each <tt>.htaccess</tt> file and you're done. Now everything works perfectly, including FrontPage, AND the permalinks of your choosing.
+
+=== Long Permalinks ===
+
+When using extra long permalinks in email and posting in comments and chats, some long permalinks are "chopped off" or only the first section is actually recognized as a link and the end seen as text. Here is an example.
+
+<div style="margin: 5px; padding:5px">
+<tt style="font-weight:bold; color:#036; text-decoration:underline; font-size:0.9em">http://yourdomain.example.com/2005/10/4/article-about-joe-fred-sally-and-bog</tt></div>
+
+Can result in:
+
+<div style="margin:5px; padding 5px"><tt> <span style="font-weight:bold; color:#036; text-decoration:underline; font-size:0.9em">http://yourdomain.example.com/2005/10/4/article</span>-about-joe-fred-sally-and-bog</tt>
+</div>
+
+To click on the lower link, the user would get a 404 Page Not Found Error.  If you have a tendency to use very long permalink post titles, take these steps to prevent this problem.
+
+1. Check that you are indeed using [[Using Permalinks|Permalinks]].
+
+2. Edit your <tt>.htaccess</tt> file and add the following:
+<pre>
+ RewriteRule ^post/([0-9]+)?/?([0-9]+)?/?$ /index.php?p=$1&page=$2 [QSA]
+</pre>
+
+3. Test it. Find a post's ID number and type the following (with your information) in your browser and you should be redirected to your post:
+<pre>
+http://yourdomain.example.com/post/(the ID #)
+</pre>
+
+It is also worth noting that most email software will not cut off URLs that have been delineated with angle-brackets (&lt; and &gt;), so when pasting URLs into emails, you should write them as so:
+
+<div style="margin: 5px; padding:5px">
+<tt>Read my blog post at &lt;<span style="text-decoration:underline; color:blue">http://yourdomain.example.com/2005/10/4/article-about-joe-fred-sally-and-bog</span>&gt;</tt></div>
+
+Additionally, some decent email clients offer a "preformat" option when composing plain-text emails. Using the "preformat" option when pasting links will force the email client not to insert linebreaks inside the links.
+
+=== Fixing Other Issues ===
+
+If your <tt>.htaccess</tt> file is being generated correctly, but Permalinks still do not function, the following might be a problem.  If problems persist, post a note in the [http://www.wordpress.org/support WordPress Forum's] How To section.
+
+;'''AllowOverride Not Enabled''' :Your server may not have the AllowOverride directive enabled.  If the AllowOverride directive is set to <tt>None</tt> in your Apache <tt>httpd.config</tt> file, then <tt>.htaccess</tt> files are completely ignored. In this case, the server will not even attempt to read <tt>.htaccess</tt> files in the filesystem. When this directive is set to <tt>All</tt>, then any directive which has the <tt>.htaccess</tt> Context is allowed in .htaccess files.  Example of enabled AllowOverride directive in <tt>httpd.config</tt>:
+
+<pre>
+ <Directory />
+    Options FollowSymLinks
+    AllowOverride All
+ </Directory>
+</pre>
+
+You may also have to enable the AllowOverride directive in your DocumentRoot:
+
+<pre>
+ <Directory /var/www/html>
+    # ... other directives...
+    AllowOverride All
+ </Directory>
+</pre>
+
+:You may also have to change the AllowOverride settings for the site. This is surely the case when using Mac OS X Server, but might be likewise with other systems.  Usually you can find the site configuration files in <tt>/etc/httpd/sites/</tt>
+
+:If you don't want to set AllowOverride to all (as it is above) then your AllowOverride list must include the FileInfo directive.  You must restart your Apache server for any <tt>httpd.config</tt> file changes to take effect.  For more information on which overrides are allowed, read about [http://httpd.apache.org/docs-2.0/mod/core.html#allowoverride Apache Core Features].
+
+;Paged Navigation Doesn't Work :Sometimes navigation to second (and subsequent) pages of posts does not work as expected. Your page may generate a link to a page with one of these URIs:
+<pre> http://www.example.com/page/2/
+ http://www.example.name/category/categoryname/page/2/
+ http://www.example/year/month/day/page/2/
+ http://www.example/year/month/page/2/
+</pre>
+
+:The result of clicking one of those links is that the page loads with all the surroundings (header, footer, sidebar), but instead of a page of posts, there is an error message: "Sorry, no posts match that criteria." 
+
+:This is due to a glitch in the <tt>.htaccess</tt> file that WordPress generates. To fix it, delete the contents of your .htaccess file and re-create it. 
+
+<ol>
+<li>In the Control Panel, go to Manage > Files ([[Editing_Files|More Info on Editing Files]])</li>
+<li>Click the link to your .htaccess file to edit its contents</li>
+<li>Copy the contents of the file and paste it to a text file in a text editor. This is a precaution in case your .htaccess file has manual entries for redirects, denials or other [http://www.javascriptkit.com/howto/htaccess.shtml handy htaccess tricks]</li>
+<li>Delete all contents from your .htaccess file and click the Update File button.</li>
+<li>In the Control Panel, go to Options > Permalinks.</li>
+<li>Click the Update Permalink Structure button to freshly generate new rewrite rules for your permalinks.</li>
+<li>Test the results using a link that had previously broken.</li>
+<li>Add any manual htaccess entries back in your file
+(Place manual htaccess entries before the <tt># BEGIN WordPress</tt> or after <tt># END WordPress</tt> lines.)</li>
+</ol>
+
+:You may also perform similar steps by deleting the <tt>.htaccess</tt> files from the server, creating a fresh empty .htaccess file, changing its permissions to 666, and then in Options > Permalinks generate a new set of htaccess rules by clicking the Update Permalinks Structure button.
+
+:If that still doesn't work, take a look at the WordPress support forums, specifically, [http://wordpress.org/support/topic/51613#post-283222 this support post].
+
+;'''Permalinks to pages don't work''' :If you've tried to navigate to a newly created [[Glossary#Page|Page]] and encounter an error, you likely need to [[Permalinks_Options_SubPanel|update your Permalink structure]]. Remember, each time you add a new static Page to WordPress, new rules must be generated and updated to <tt>.htaccess</tt> (WordPress 1.X) or to the internal rewrites array (WordPress 2.X).
+
+;'''Permalinks to Ultimate Tag Warrior tag pages don't work''' :If you get 404 errors on local tag URLs when using the UltimateTagWarrior plugin on WordPress 2.X, it's because the internal rewrites generated by WordPress are being overly greedy and getting invoked before UTW's rewrite rules have a chance. This usually occurs only when using a custom permalink structure (like <tt>/%postname%/</tt>). To fix it, either [[Permalinks_Options_SubPanel|switch your Permalink structure]] to "Date and name based" or hack the UTW plugin to place the UTW rewrites at the top of the internal rewrites array. 
+
+;'''Permalinks work but no pages are returned''' :Some versions of PHP 4.4.x and 5.x have a bug that causes mod_rewrite to fail when used with some versions of Apache 2.x. More details at http://bugs.php.net/bug.php?id=35096 and http://bugs.php.net/bug.php?id=35059.
+
+=== More Help ===
+
+If these steps do not work, search for your problem in the [http://codex.wordpress.org Codex], [[Troubleshooting]], or in the [http://wordpress.org/support/ Support Forum]. As a last resort, [[Submitting_Bugs|file a bug report]].
+
+== Tips and Tricks ==	 
+
+=== Avoiding interpretation as an archive link ===
+Note that even though one might never make more than one posting a
+day, and thus wishes to use e.g., %year%%monthnum%%day%, links so
+generated will however be interpreted as the archive of all posts for
+that day. One needs at least %year%%monthnum%%day%%hour% to target an
+individual post.
+
+=== Check for permalink structure ===
+A way to check if the blog has a permalink structure is:
+<pre><?php if ( get_option('permalink_structure') ) { echo 'permalinks enabled'; } ?></pre>
+
+== See Also ==
+*[[Linking Posts Pages and Categories]] for how to link from one article to another
+
+
+[[Category:Getting Started]]
+[[Category:Troubleshooting]]
+[[Category:UI Link]]

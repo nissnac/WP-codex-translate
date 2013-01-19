@@ -1,0 +1,8 @@
+Dictionnaire de la terminologie WordPress à l'usage des traducteurs:
+
+Tâches à faire:
+lier les pages EN aux pages FR
+
+Permalink = permalien
+
+Template = gabarit

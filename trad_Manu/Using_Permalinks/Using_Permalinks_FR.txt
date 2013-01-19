@@ -9,8 +9,9 @@
 {{zh-tw|使用固定連結}}
 }}
 
+{{French Header}}
+
 __TOC__
-Permalinks are the permanent URLs to your individual weblog posts, as well as categories and other lists of weblog postings. A permalink is what another weblogger will use to link to your article (or section), or how you might send a link to your story in an e-mail message. The URL to each post should be permanent, and never change — hence ''perma''link.
 
 Les permaliens sont les adresses (URL) permanentes de vos articles, ainsi que des catégories, archives, et autres pages spéciales. Le permalien permet à un autre site de référer à l'un de vos articles, ou de pointer vers votre article depuis un courriel. L'adresse URL de chaque article devrait être permanente, et ne devrait jamais changer - d'où le terme de "perma"-lien.
 
@@ -18,44 +19,46 @@ Les permaliens sont les adresses (URL) permanentes de vos articles, ainsi que de
 
 Il existe trois types de permaliens dans WordPress:
 
-=== mod_rewrite: "Pretty Permalinks" ===
+=== mod_rewrite: "permaliens simplifés" ===
 
-En utilisant les fonctions mod_rewrite ou lighttpd de votre serveur, vous pouver produire des permaliens agréables à la lecture (voir [[Introduction_to_Blogging#Pretty_Permalinks|Pretty Permalinks]]). Il existe de nombreux formats possibles, mais les plus communs ressemblent à ceci:
+En utilisant les fonctions mod_rewrite ou lighttpd de votre serveur, vous pouvez produire des permaliens agréables à la lecture (voir [[Introduction_to_Blogging#Pretty_Permalinks|Pretty Permalinks]]). Il existe de nombreux formats possibles, mais les plus communs ressemblent à ceci:
 
 <pre>http://exemple.fr/2012/mon-article/</pre>
 ou
 <pre>http://exemple.com/2012/12/30/mon-article</pre>
 
-Les "jolis permaliens" sont disponibles sous ces environnements:
+Les "permaliens simplifés" sont disponibles sous ces environnements:
 
 *  Serveur web Apache avec le module <tt>mod_rewrite</tt>
 *  Serveur web Microsoft IIS 7+ avec le module URL Rewrite 1.1+ module et PHP 5 en mode FastCGI
 *  Microsoft IIS 6+ en utilisant [http://www.kylecaulfield.com/permalink-for-wordpress-iis-6-mod_rewrite-fixed-free ASAPI_Rewrite]
 *  Lighttpd en utilisant [http://chrisjohnston.org/2009/setting-up-a-wordpress-blog-on-lighttpd a 404 handler] ou [http://blog.nix.is/lighttpd-rewrite-rules-for-wordpress mod_rewrite] (voir [[Using_Permalinks#See_Also|See Also]])
 
-=== PATHINFO: "Presque joli" ===
+=== PATHINFO: "semi-simplifé" ===
 
 Avec <tt>PATHINFO</tt>, les liens ressemblent à ceux de <tt>mod_rewrite</tt> à une exception près: ils sont précédés d'une partie <tt>/index.php</tt>, de cette manière: 
 
 <pre>http://exemple.fr/index.php/2012/12/30/mon-article/</pre>
 
-Mis à part ce détail, ils sont identiques aux "jolis" permaliens en <tt>mod_rewrite</tt>, et offrent la même flexibilité.
+Mis à part ce détail, ils sont identiques aux permaliens simplifiés en <tt>mod_rewrite</tt>, et offrent la même flexibilité.
 
 == Choisir votre structure de permaliens ==
 
-In the Settings &rarr; Permalinks panel (Options &rarr; Permalinks before WordPress 2.5), you can choose one of the "common" structures or enter your own in the "Custom structure" field using the <i>structure tags</i>.
+Dans la page de configuration Réglages &rarr; Permaliens, vous pouvez choisir l'un des "Réglages courants" proposés, ou créer une "Structure personnalisée" en utilisant les <i>marqueurs de structure</i>.
 
 <strong>À noter:</strong>
-You never, ever put your site url in the permalinks slot. You must use one of the structure tags, or a combination of tags only.
+Ne mettez jamais le nom de domaine de votre site dans le champ Structure spersonnalisée. N'utilisez que les marqueurs de structure.
 
-To activate PATHINFO permalinks, start your permalink structure with <tt>index.php/</tt>.
+Pour activer les permaliens PATHINFO, votre structure devra commencer par <tt>index.php/</tt>.
 
 [[File:permalink-settings.png‎]]
 
-=== Structure Tags ===
+=== Les marqueurs de structure ===
 
-<strong>Please note:</strong>
- You never, ever put your site url in the permalinks slot. You must use one of the structure tags, or a combination of tags only. 
+<strong>À noter:</strong>
+Ne mettez jamais le nom de domaine de votre site dans le champ Structure spersonnalisée. N'utilisez que les marqueurs de structure.
+
+<pre>À partir d'ici, tout reste à traduire...</pre>
 
 You can use these tags to customize your "Pretty" or "Almost Pretty" permalinks. A few hints:
 * Make sure to end your structure with either <tt>%post_id%</tt> or <tt>%postname%</tt> (e.g. <tt>/%year%/%monthnum%/%day%/%postname%/</tt>) so that each permalink points to an individual post.

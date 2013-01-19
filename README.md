@@ -11,7 +11,7 @@ Ce dossier est partagé et consultable en ligne à divers endroits:
 Notre méthode de traduction se présente comme suit:
 
 - Le/la traducteur/trice choisit un article à traduire dans la version anglaise du Codex.
-- Il/elle copie le code de l'article dans un fichier texte, qu'il/elle enregistre dans un dossier à son nom.
+- Il/elle copie le code de l’article dans un fichier texte, qu'il/elle enregistre dans un dossier à son nom.
 - Il/elle peut désormais travailler sur cette traduction à ses moments perdus, même hors ligne.
 - Une fois la traduction effectuée, elle est ré-insérée dans le Codex.
 

@@ -1,8 +1,35 @@
-Dictionnaire de la terminologie WordPress à l'usage des traducteurs:
+## Dictionnaire de la terminologie WordPress ##
 
-Tâches à faire:
-lier les pages EN aux pages FR
+Ce document est destiné à l'usage des traducteurs du Codex
+
+***
+
+Checkbox = case à cocher
+
+Dashboard = tableau de bord
+
+Panel (ex: In the Settings → Permalinks panel ) = page de configuration (?)
 
 Permalink = permalien
 
+Pretty Permalinks = permaliens simplifiés
+( note: dans Prestashop, c’est URL simplifiée / ou "Friendly URLs")
+
+Tags (structure tags) = marqueurs de structure
 Template = gabarit
+
+***
+
+Lien public de ce glossaire:
+https://docs.google.com/a/ms-studio.net/document/d/1AohUSxjoFprYM7XrPko4SCQXlA2SkiLvf2ZOkfUx2-o/edit
+
+Liste de pages prioritaires à traduire:
+http://www.wordpress-fr.net/support/viewtopic.php?pid=378677
+
+Notes diverses:
+Les articles créées durant le Hackday WordCamp Paris 2013, 19 janvier:
+- http://codex.wordpress.org/fr:Tableau_de_bord
+- https://codex.wordpress.org/fr:Utilisation_des_Th%C3%A8mes
+- http://codex.wordpress.org/fr:Utilisation_des_permaliens
+
+##

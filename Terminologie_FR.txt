@@ -16,7 +16,8 @@ Pretty Permalinks = permaliens simplifiés
 ( note: dans Prestashop, c’est URL simplifiée / ou "Friendly URLs")
 
 Tags (structure tags) = marqueurs de structure
-Template = gabarit
+
+Template = modèle (changé par Max)
 
 ***
 
@@ -26,8 +27,11 @@ https://docs.google.com/a/ms-studio.net/document/d/1AohUSxjoFprYM7XrPko4SCQXlA2S
 Liste de pages prioritaires à traduire:
 http://www.wordpress-fr.net/support/viewtopic.php?pid=378677
 
+Liens utiles pour voir ce qui existe dans le Codex Français:
+- http://codex.wordpress.org/Category:French_Codex
+
 Notes diverses:
-Les articles créées durant le Hackday WordCamp Paris 2013, 19 janvier:
+Les articles créées/mis à jour durant le Hackday WordCamp Paris 2013, 19 janvier:
 - http://codex.wordpress.org/fr:Tableau_de_bord
 - https://codex.wordpress.org/fr:Utilisation_des_Th%C3%A8mes
 - http://codex.wordpress.org/fr:Utilisation_des_permaliens

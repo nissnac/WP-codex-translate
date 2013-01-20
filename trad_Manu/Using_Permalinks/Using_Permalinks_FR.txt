@@ -368,8 +368,6 @@ individual post.
 A way to check if the blog has a permalink structure is:
 <pre><?php if ( get_option('permalink_structure') ) { echo 'permalinks enabled'; } ?></pre>
 
-== See Also ==
-*[[Linking Posts Pages and Categories]] for how to link from one article to another
 
 
 [[Category:Getting Started]]

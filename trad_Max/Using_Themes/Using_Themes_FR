@@ -1,0 +1,63 @@
+==Qu'est-ce qu'un Thème ?==
+
+Le système de Thème WordPress vous permet de personnaliser l'apparence graphique de votre site. C'est même bien plus qu'une simple modification d'apparence. Personnaliser votre site implique que seule l'apparence change. Les Thèmes WordPress vous offrent un contrôle poussé de l'apparence et de la manière de présenter les éléments de votre site.
+
+Un Thème Wordpress est composé d'un ensemble de fichiers qui permettent de produire une interface graphique complète de votre site. Ces fichiers sont appelés [[Templates|'''modèles (en)''']] ([[Templates|'''template files (en)''']] en anglais). Le thème modifie simplement l'apparence visuelle, sans modifier le comportement de WordPress. Les Thèmes incluent généralement des modèles, images (<tt>*.jpg</tt>, <tt>*.gif</tt>), feuilles de styles (<tt>*.css</tt>), [[Pages]] personnalisés et les fichiers nécessaires de code (<tt>*.php</tt>). Visitez [[Stepping Into Templates|'''Découvrez les modèles (en)''']] pour une présentation des modèles.
+
+Admettons que votre site parle de chiens et de chats. En combinant l'utilisation de la [[fr:La_Boucle|'''Boucle WordPress''']] et des [[Templates|'''modèles (en)''']], vous pouvez obtenir une apparence différente en fonction que vous soyez sur la catégorie "chiens" ou la catégorie "chats". Vous avez un contrôle total de l'apparence de chaque page, catégorie de votre site. Pour plus de renseignements sur la personnalisation des Thèmes en fonction des pages, visitez [[fr:La_Boucle_En_Action|'''La Boucle en action''']] et [[Category Templates|'''Modèles de catégories (en)''']].
+
+==Obtenir des Thèmes==
+
+Le [http://wordpress.org/extend/themes/ Répertoire de Thèmes] est le site officiel des Thèmes Wordpress que vous pouvez télécharger gratuitement. Tous les thèmes ont été vérifiés et validés. Le site propose un moteur de recherche par type et apparence, et propose une démonstration en direct du thème.
+
+==Utilisation des Thèmes==
+
+Wordpress est livré avec plusieurs Thèmes, dont [[Glossary#Twenty Twelve theme|Twenty Twelve theme]] et les anciens thèmes par défaut [[Glossary#Twenty Eleven theme|Twenty Eleven theme]] et [[Glossary#Twenty Ten theme|Twenty Ten theme]]. Vous pouvez basculer d'un thème à un autre à partir du panneau d'administration. Les Thèmes que vous ajoutez dans le répertoire de Thèmes apparaitront dans [[Administration Panels]] > [[Administration_Panels#Design_-_Change_the_Look_of_your_Blog|Design]] > [[Administration_Panels#Themes|Themes]].
+
+===Ajouter un Thème===
+
+[[Image:themes.png|thumb|right|Appearance Panel]]
+
+Il existe énormément de Thèmes prêt à l'emploi qui fonctionneront avec votre installation de WordPress.
+
+Si le thème que vous installez contient des instructions, prenez un moment pour les lire et de les appliquer pour que le thème fonctionne correctement. '''Nous recommandons aux développeurs de thèmes de proposer des instructions d'installation pour chacun de leur Thème''', car les thèmes peuvent parfois proposer des fonctionnalités spéciales qui peuvent nécessiter un minimum de configuration supplémentaire pour fonctionner correctement. Si votre thème ne fonctionne pas correctement après avoir suivi les instructions d'installation, contactez '''l'auteur du thème pour obtenir de l'aide'''.
+
+====Ajouter de nouveaux Thèmes en utilisant le panneau d'administration====
+
+Vous pouvez directement télécharger un thème sur votre site en utilisant l'option "Ajouter un nouveau Thème" dans le sous-menu apparence.
+
+# Connectez-vous à votre interface Wordpress [[Administration Panels|Administration Panels]]
+# Cliquez sur [[Administration_Panels#Appearance_-_Change_the_Look_of_your_Blog|Appearance]], puis [[Administration_Panels#Themes|Themes]].
+# Cliquez sur "Installer des thèmes".
+# Utilisez le moteur de recherche ou choisissez parmi les critères.
+# Cliquez sur '''Aperçu''' pour voir le thème ou '''Installer maintenant''' pour installer le thème sur votre site
+# Une fois le téléchargement terminé, cliquez sur '''Activer''' pour utiliser votre nouveau thème
+
+====Ajouter de nouveaux Thèmes en utilisant cPanel====
+
+Si votre hébergeur propose [[Glossary#cPanel|cPanel]], et le thème que vous avez téléchargé est au format .zip ou .gz, suivez ces instructions. Note : L'archive doit contenir un dossier au nom du thème.
+
+# Téléchargez le thème sur votre ordinateur
+# Dans cPanel File Manager, naviguez jusqu'au dossier de thèmes, généralement situé dans "public_html/wp-content/themes". Si WordPress est installé dans son propre dossier, naviguez alors vers "public_html/wordpress/wp-content/themes"
+# Cliquez ensuite sur Upload file(s) et sélectionnez l'archive sur votre ordinateur que vous avez téléchargé à l'étape 1
+# Une fois le téléversevement terminé, cliquez sur le fichier dans cPanel, et dans le panneau de droite cliquez sur "Extract File Contents". Le contenu va être décompressé.
+# Suivez les [[#Activer_votre_thème|instructions ci-dessous]] pour activer le thème
+
+
+====Ajouter des thèmes manuellement  via FTP====
+
+Vous pouvez également ajouter votre thème directement dans votre installation de WordPress. Cette technique vous permet d'installer un thème qui ne vient pas du site officiel Wordpress.
+
+# Téléchargez l'archive du thème et extrayez les fichiers qu'elle contient. Vous devez préservez la structure des fichiers, dans un dossier portant le nom du thème, par exemple "mon-theme". Suivez les éventuelles indications complémentaires données par le créateur du thème.
+# Utilisez un [[FTP_Clients|client FTP]] pour accéder à votre hébergement web. Naviguez dans le dossier <tt>wp-content/themes</tt> et placez-y votre dossier de thème.
+# Suivez les [[#Activer_votre_thème|instructions ci-dessous]] pour activer le thème
+
+
+===Activer votre thème===
+
+Afin de sélectionner un thème pour votre site :
+
+# Connectez-vous sur le [Administration Panels|Panneau d'Administration]]
+# Cliquez sur [Administration_Panels#Appearance_-_Change_the_Look_of_your_Blog|Apparence]], puis [[Administration_Panels#Themes|Thèmes]]
+# Depuis la section '''Gérer les thèmes''', cliquez sur '''activer'''
+# Vous pouvez également prévisualiser le thème et le personnaliser. Selon le thème, vous pourrez choisir le titre du site, son slogan, et définir les couleurs et le positionnement de la sidebar

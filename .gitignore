@@ -45,8 +45,6 @@ Icon*
 # Custom #
 ###################
 # *.gitignore
-/old-stuff/*
-/git-ignore/*
-*.alt.php
-index.hackerspaces.alt.php
+# /old-stuff/*
+# /git-ignore/*
 

@@ -10,6 +10,8 @@ Dashboard = tableau de bord
 
 Panel (ex: In the Settings → Permalinks panel ) = page de configuration (?)
 
+Panel (ex: the Edit Post/Page panel = interface d'édition (?)
+
 Permalink = permalien
 
 Pretty Permalinks = permaliens simplifiés
@@ -28,6 +30,7 @@ Liste de pages prioritaires à traduire:
 http://www.wordpress-fr.net/support/viewtopic.php?pid=378677
 
 Liens utiles pour voir ce qui existe dans le Codex Français:
+- http://codex.wordpress.org/fr:Effort_de_Traduction#En_cours_de_traduction
 - http://codex.wordpress.org/Category:French_Codex
 
 Notes diverses:

@@ -1,5 +1,6 @@
 {{Languages|
 {{en|Using Permalinks}}
+{{fr|Utilisation des permaliens}}
 {{pt-br|Usando Links permanentes}}
 {{it|Using Permalink}}
 {{ja|パーマリンクの使い方}}
@@ -58,55 +59,55 @@ Pour activer les permaliens PATHINFO, votre structure devra commencer par <tt>in
 <strong>À noter:</strong>
 Ne mettez jamais le nom de domaine de votre site dans le champ Structure spersonnalisée. N'utilisez que les marqueurs de structure.
 
-<pre>À partir d'ici, tout reste à traduire...</pre>
-
-You can use these tags to customize your "Pretty" or "Almost Pretty" permalinks. A few hints:
-* Make sure to end your structure with either <tt>%post_id%</tt> or <tt>%postname%</tt> (e.g. <tt>/%year%/%monthnum%/%day%/%postname%/</tt>) so that each permalink points to an individual post.
+Vous pouvez utiliser ces marqueurs afin de personaliser vos permaliens "simplifiés". Quelques coseils:
+* Assurez-vous que votre structure se termine soit par <tt>%post_id%</tt>, soit par <tt>%postname%</tt> (p.ex. <tt>/%year%/%monthnum%/%day%/%postname%/</tt>) afin que chaque permalien pointe vers un article unique.
 
 ; %year%
-: The year of the post, four digits, for example <tt>2004</tt>
+: L'année de publication l'article, en quatres chiffres, par exemple : <tt>2012</tt>
 
 ; %monthnum%
-: Month of the year, for example <tt>05</tt>
+: Le numéro du mois de publication, par exemple : <tt>05</tt>
 
 ; %day%
-: Day of the month, for example <tt>28</tt>
+: Le jour du mois, par exemple : <tt>28</tt>
 
 ; %hour%
-: Hour of the day, for example <tt>15</tt>
+: L'heure de publication, par exemple :  <tt>15</tt>
 
 ; %minute%
-: Minute of the hour, for example <tt>43</tt>
+: La minute de publication, par exemple : <tt>43</tt>
 
 ; %second%
-: Second of the minute, for example <tt>33</tt>
+: La seconde de publication, par exemple : <tt>33</tt>
 
 ; %post_id%
-: The unique ID # of the post, for example <tt>423</tt>
+: L'identifiant unique (ID) de l'article, par exemple : <tt>423</tt>
 
 ; %postname%
-: A sanitized version of the title of the post (<i>post slug</i> field on Edit Post/Page panel). So &#8220;This Is A Great Post!&#8221; becomes <tt>this-is-a-great-post</tt> in the URI.
+: Une version simplifiée du titre de l'article (le champ <i>Identifiant</i> dans l'interface d'édition). Par exemple, “Voici mon premier billet !” devient <tt>voici-mon-premier-billet</tt> dans l'URL.
 
 ; %category%
-: A sanitized version of the category name (<i>category slug</i> field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI. 
+: Une version simplifiée du nom de la catégorie (le champ <i>Identifiant</i> dans l'interface d'édition des Catégories). Les sous-catégories apparaîtront comme des sous-répertoires dans l'URL.  
 
 ; %author%
-: A sanitized version of the author name.
+: Une version simplifiée du nom de l'auteur de l'article. 
 
-=== Category base and Tag base ===
+=== Préfixe des catégories, Préfixe des mots-clefs ===
 
-The <i>Category base</i> and <i>Tag base</i> are prefixes used in URLs for category and tag archives, which look like this:
+Le <i>Préfixe des catégories</i> et le <i>Préfixe des mots-clefs</i> sont utilisés pour les liens des archives par catégories ou par mots-clefs. Ces liens ressemblent à ceci:
 
-  example.net/wp/<var>category_base</var>/<var>category_name</var>
-  example.net/wp/<var>tag_base</var>/<var>tag_name</var>
+  example.net/wp/<var>prefixe_de_categorie</var>/<var>nom_de_categorie</var>
+  example.net/wp/<var>prefixe_de_mot_cle</var>/<var>nom_de_mot_cle</var>
 
-The default values for these are <tt>category</tt> and <tt>tag</tt>. You can change them, but you can't remove them from the URLs altogether.
+Les valeurs par défaut pour ces préfixes sont <tt>category</tt> et <tt>tag</tt> (si vous avez installé WordPress en anglais). Vous pouvez les modifier, mais vous ne pouvez pas empêcher ces préfixes d'apparaître dans vos URLs.
 
-Custom permalinks work on most systems without any problems, but there are still some conditions where problems occur.
+Les permaliens personalisés fonctionnent sur la majorité des systèmes sans problèmes, mais dans certaines situations des problèmes peuvent survenir.
 
-=== Using <tt>%category%</tt> with multiple categories on a post ===
+=== Utilisation de <tt>%category%</tt> avec des catégories multiples ===
 
-When you assign multiple categories to a post, only one can show up in the permalink. This will be the lowest numbered category (see [[Manage_Categories_SubPanel|Manage Categories]]). The post will still be accessible through all the categories as normal.
+Si un article est classé dans plusieurs catégories, seules l'une d'entre elles s'affichera dans le permalien. Ce sera la catégorie dont l'identifiant est le plus petit (voir [[Manage_Categories_SubPanel|Manage Categories]] en anglais). L'article sera toujours accessible en navigant par les autres catégories.
+
+<pre>À partir d'ici, tout reste à traduire...</pre>
 
 == Using "Pretty" permalinks ==
 
@@ -129,7 +130,7 @@ In WordPress 2.0+ versions, you'll probably need to do this only once, because W
 
 WordPress will play nice with an existing <tt>.htaccess</tt> and will not delete any existing RewriteRules or other directives. If you have other <tt>mod_rewrite</tt> rules, put yours before WordPress's.
 
-=== Where's my <tt>.htaccess</tt> file? ===
+=== Où est mon fichier <tt>.htaccess</tt> ? ===
 
 WordPress's <tt>index.php</tt> and <tt>.htaccess</tt> files should be together in the directory indicated by the ''Site address (URL)'' setting on your General Options page. Since the name of the file begins with a dot, the file may not be visible through an FTP client unless you change the preferences of the FTP tool to show all files, including the hidden files.
 Some hosts (e.g. Godaddy) may not show or allow you to edit .htaccess if you install WordPress through the Godaddy Hosting Connection installation.
@@ -163,39 +164,9 @@ If you want to let WordPress do this, you'll need to [[Changing_File_Permissions
 
 After applying the permalinks, you should change the permissions to something stronger like 660 or 644 to prevent others on the server from potentially having access to it.
 
-== Permalinks without <tt>mod_rewrite</tt> ==
+== Utiliser les permaliens sans <tt>mod_rewrite</tt> ==
 
-"Pretty" permalinks usually require <tt>[[Glossary#mod_rewrite|mod_rewrite]]</tt>, and IIS (common on Windows servers) does not support <tt>mod_rewrite</tt>. (If you are using Apache 2.0.54, on Windows, <tt>mod_rewrite</tt> may work, provided it is enabled in <tt>apache\conf\httpd.conf</tt>.) 
-
-If you are using IIS 7 and have admin rights on your server, you can use Microsoft's [http://learn.iis.net/page.aspx/460/using-url-rewrite-module/ URL Rewrite Module] instead.  Though not completely compatible with <tt>mod_rewrite</tt>, it does support WordPress's pretty permalinks.  Once installed, open the <tt>web.config</tt> file in the WordPress folder and add the following rule to the <tt>system.webServer</tt> element
-
-<pre>
-<rewrite>
-    <rules>
-        <rule name="Main Rule" stopProcessing="true">
-            <match url=".*" />
-            <conditions logicalGrouping="MatchAll">
-                <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
-                <add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
-            </conditions>
-            <action type="Rewrite" url="index.php/{R:0}" />
-        </rule>
-    </rules>
-</rewrite>
-</pre>
-
-There's a [http://learn.iis.net/page.aspx/466/enabling-pretty-permalinks-in-wordpress/ full installation guide] on the IIS site.  The module is available for [http://www.iis.net/downloads/1692/ItemPermaLink.ashx x64] and [http://www.iis.net/downloads/1691/ItemPermaLink.ashx x86] systems.
-
-If this isn't an option, you can try PATHINFO permalinks; put <tt>index.php/</tt> at the start of your custom permalink structure:
-
-  /index.php/%year%/%monthnum%/%day%/%postname%/
-
-This option may not always work, especially in cases of WordPress running on IIS 6.  To make this option work on IIS, add these 2 lines to a php.ini file and store that file in your webroot :
-
-  cgi.fix_pathinfo = 1
-  cgi.force_redirect = 0
-
-Another solution exists using IIS' custom 404 redirects. It requires that your web host allows you to add a custom 404 redirect, but it doesn't require you to install any 3rd party mod_rewrite software and it also doesn't require that your permalink structure begin with <tt>/index.php/</tt>.
+Non traduit, veuillez vous référer [[Using_Permalinks#Permalinks_without_mod_rewrite|à la documentation en anglais]].
 
 == Fixing Permalink Problems ==
 
@@ -355,18 +326,6 @@ You may also have to enable the AllowOverride directive in your DocumentRoot:
 
 If these steps do not work, search for your problem in the [http://codex.wordpress.org Codex], [[Troubleshooting]], or in the [http://wordpress.org/support/ Support Forum]. As a last resort, [[Submitting_Bugs|file a bug report]].
 
-== Tips and Tricks ==	 
-
-=== Avoiding interpretation as an archive link ===
-Note that even though one might never make more than one posting a
-day, and thus wishes to use e.g., %year%%monthnum%%day%, links so
-generated will however be interpreted as the archive of all posts for
-that day. One needs at least %year%%monthnum%%day%%hour% to target an
-individual post.
-
-=== Check for permalink structure ===
-A way to check if the blog has a permalink structure is:
-<pre><?php if ( get_option('permalink_structure') ) { echo 'permalinks enabled'; } ?></pre>
 
 
 

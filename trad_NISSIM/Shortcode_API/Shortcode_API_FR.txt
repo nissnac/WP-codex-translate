@@ -1,0 +1,20 @@
+{{Languages|
+{{en|Using Permalinks}}
+{{fr|Utilisation des permaliens}}
+{{pt-br|Usando Links permanentes}}
+{{it|Using Permalink}}
+{{ja|パーマリンクの使い方}}
+{{ko|Using Permalinks}}
+{{th|Using Permalinks}}
+{{zh-cn|使用固定链接}}
+{{zh-tw|使用固定連結}}
+}}
+
+{{French Header}}
+
+__TOC__
+
+== L'API Shortcode ==
+
+Introduite dans WordPress 2.5 l'API Shortcode est un simple ensemble de fonctions qui permettent de créer des macro-codes pour une utilisation dans le contenu des articles. Par exemple, le shortcode suivant (dans le contenu de l'article/page) ajoutera une galerie photo dans la page :
+<pre>[gallery]</pre>

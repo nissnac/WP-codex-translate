@@ -1,0 +1,345 @@
+{{Languages|
+{{en|Shortcode API}}
+{{ja|ショートコード API}}
+{{pt-br|Shortcode API}}
+}}
+
+== The Shortcode API ==
+
+Introduced in WordPress 2.5 is the Shortcode API, a simple set of functions for creating macro codes for use in post content. For instance, the following shortcode (in the post/page content) would add a photo gallery into the page:
+
+ [gallery]
+
+It enables plugin developers to create special kinds of content (e.g. forms, content generators) that users can attach to certain pages by adding the corresponding shortcode into the page text. 
+
+The Shortcode API makes it easy to create shortcodes that support attributes like this:
+
+ [gallery id="123" size="medium"]
+
+The API handles all the tricky parsing, eliminating the need for writing a custom regular expression for each shortcode.  Helper functions are included for setting and fetching default attributes.  The API supports both self-closing and enclosing shortcodes.
+
+As a quick start for those in a hurry, here's a minimal example of the PHP code required to create a shortcode:
+
+ //[foobar]
+ function foobar_func( $atts ){
+  return "foo and bar";
+ }
+ add_shortcode( 'foobar', 'foobar_func' );
+
+This will create [foobar] shortcode that returns as: foo and bar
+
+With attributes:
+
+ // [bartag foo="foo-value"]
+ function bartag_func( $atts ) {
+   extract( shortcode_atts( array(
+ 		'foo' => 'something',
+ 		'bar' => 'something else',
+ 	), $atts ) );
+ 
+ 	return "foo = {$foo}";
+ }
+ add_shortcode( 'bartag', 'bartag_func' );
+
+This creates a "[bartag]" shortcode that supports two attributes: ["foo" and "bar"].  Both attributes are optional and will take on default options [foo="something" bar="something else"] if they are not provided. The shortcode will return as foo = {the value of the foo attribute}
+
+=== Overview ===
+
+Shortcodes are written by providing a handler function.  Shortcode handlers are broadly similar to WordPress filters: they accept parameters (attributes) and return a result (the shortcode output).
+
+Shortcode names should be all lowercase and use all letters, but numbers and underscores should work fine too. Be wary of [[Shortcode_API#Hyphens|using hyphens]] (dashes), you'll be better off not using them.
+
+The `add_shortcode()` function is used to register a shortcode handler.  It takes two parameters: the shortcode name (the string used in a post body), and the callback function name.
+
+Three parameters are passed to the shortcode callback function. You can choose to use any number of them including none of them.
+
+<ul>
+<li>'''$atts''', an associative array of attributes, or an empty string if no attributes are given</li>
+<li>'''$content''', the enclosed content (if the shortcode is used in its enclosing form)</li>
+<li>'''$tag''', the shortcode tag, useful for shared callback functions</li>
+</ul>
+
+The API call to register the shortcode handler would look something like this:
+
+ add_shortcode( 'myshortcode', 'my_shortcode_handler' );
+
+When [[Template Tags/the content|the_content]] is displayed, the shortcode API will parse any registered shortcodes such as "[myshortcode]", separate and parse the attributes and content, if any, and pass them the corresponding shortcode handler function.  Any string ''returned'' (not echoed) by the shortcode handler will be inserted into the post body in place of the shortcode itself.
+
+Shortcode attributes are entered like this:
+
+ [myshortcode foo="bar" bar="bing"]
+
+These attributes will be converted into an associative array like the following, passed to the handler function as its $atts parameter:
+
+ array( 'foo' => 'bar', 'bar' => 'bing' )
+
+The array keys are the attribute names; array values are the corresponding attribute values. In addition, the zeroeth entry ('''$atts[0]''') will hold the string that matched the shortcode regex, but ONLY IF that is different from the callback name. See the discussion of attributes, below.
+
+=== Attributes ===
+
+The raw '''$atts''' array may include any arbitrary attributes that are specified by the user. (In addition, the zeroeth entry of the array may contain the string that was recognized by the regex; see the note below.)
+
+In order to help set default values for missing attributes, and eliminate any attributes that are not recognized by your shortcode, the API provides a shortcode_atts() function.
+
+shortcode_atts() resembles the wp_parse_args() function, but has some important differences.  Its parameters are:
+
+ shortcode_atts( $defaults_array, $atts );
+
+Both parameters are required.  $defaults_array is an associative array that specifies the recognized attribute names and their default values.  $atts is the raw attributes array as passed into your shortcode handler.  shortcode_atts() will return a normalized array containing all of the keys from the $defaults_array, filled in with values from the $atts array if present.  For example:
+
+ $a = shortcode_atts( array(
+    'title' => 'My Title',
+    'foo' => 123,
+    ), $atts );
+
+If $atts were to contain array( 'foo' => 456, 'bar' => 'something' ), the resulting $a would be array( 'title' => 'My Title', 'foo' => 456 ).  The value of $atts['foo'] overrides the default of 123.  $atts['title'] is not set, so the default 'My Title' is used.  And there is no 'bar' item in the defaults array, so it is not included in the result.
+
+Attribute names are always converted to lowercase before they are passed into the handler function.  Values are untouched.  [myshortcode FOO="BAR"] produces $atts = array( 'foo' => 'BAR' ).
+
+A suggested code idiom for declaring defaults and parsing attributes in a shortcode handler is as follows:
+
+ function my_shortcode_handler( $atts, $content = null ) {
+    extract( shortcode_atts( array(
+       'attr_1' => 'attribute 1 default',
+       'attr_2' => 'attribute 2 default',
+       // ...etc
+       ), $atts ) );
+ }
+
+This will parse the attributes, set default values, eliminate any unsupported attributes, and (using [http://www.php.net/extract extract()]) store the results in local variables named for the attribute keys - $attr_1, $attr_2 and so on.  In other words, the array of defaults approximates a list of local variable declarations.  (extract() is safe to use in this context without special flags to handle collisions because shortcode_atts() will strip out any keys not included in the defaults array).
+
+----
+; IMPORTANT TIP - Don't use camelCase or UPPER-CASE for your <tt>$atts</tt> attribute names: <tt>$atts</tt> values are '''''lower-cased''''' during <tt>shortcode_atts( array( 'attr_1' => 'attr_1 default', // ...etc ), $atts )</tt> processing, so you might want to ''just use lower-case''.
+----
+
+----
+; NOTE on confusing regex/callback name reference: The zeroeth entry of the attributes array ('''$atts[0]''') will contain the string that matched the shortcode regex, but ONLY if that differs from the callback name, which otherwise appears as the third argument to the callback function.
+; (Appears to always appear as third argument as of 2.9.2.)
+
+  add_shortcode('foo','foo'); // two shortcodes referencing the same callback
+  add_shortcode('bar','foo');
+     produces this behavior:
+  [foo a='b'] ==> callback to: foo(array('a'=>'b'),NULL,"foo");
+  [bar a='c'] ==> callback to: foo(array(0 => 'bar', 'a'=>'c'),NULL,"");
+
+This is confusing and perhaps reflects an underlying bug, but an overloaded callback routine can correctly determine what shortcode was used to call it, by checking BOTH the third argument to the callback and the zeroeth attribute. (It is NOT an error to have two shortcodes reference the same callback routine, which allows for common code.)
+
+=== Output ===
+
+The return value of a shortcode handler function is inserted into the post content output in place of the shortcode macro.  Remember to use return and not echo - anything that is echoed will be output to the browser, but it won't appear in the correct place on the page.
+
+Shortcodes are parsed after [[Function_Reference/wpautop|wpautop]] and [[Function Reference/wptexturize|wptexturize]] post formatting has been applied (but see the note below about 2.5.0 and 2.5.1 differences).  This means that your shortcode output HTML won't automatically have curly quotes applied, p and br tags added, and so on.  If you do want your shortcode output to be formatted, you should call wpautop() or wptexturize() directly when you return the output from your shortcode handler.
+
+wpautop recognizes shortcode syntax and will attempt not to wrap p or br tags around shortcodes that stand alone on a line by themselves.  Shortcodes intended for use in this manner should ensure that the output is wrapped in an appropriate block tag such as &lt;p&gt; or &lt;div&gt;.
+
+Note: in WordPress 2.5.0, shortcodes were parsed before post formatting was applied, so the shortcode output HTML was sometimes wrapped in p or br tags.  This was incorrect behaviour that has been fixed in 2.5.1.
+
+=== Enclosing vs self-closing shortcodes ===
+
+The examples above show self-closing shortcode macros such as [myshortcode].  The API also supports enclosing shortcodes such as [myshortcode]content[/myshortcode].
+
+If a shortcode macro is used to enclose content, its handler function will receive a second parameter containing that content.  Users might write shortcodes in either form, so it is necessary to allow for either case by providing a default value for the second parameter to your handler function:
+
+ function my_shortcode_handler( $atts, $content = null )
+
+is_null( $content ) can be used to distinguish between the self-closing and enclosing cases.
+
+When content is enclosed, the complete shortcode macro including its content will be replaced with the function output.  It is the responsibility of the handler function to provide any necessary escaping or encoding of the raw content string, and include it in the output.
+
+Here's a trivial example of an enclosing shortcode:
+
+ function caption_shortcode( $atts, $content = null ) {
+    return '&lt;span class="caption"&gt;' . $content . '&lt;/span&gt;';
+ }
+
+ add_shortcode( 'caption', 'caption_shortcode' );
+
+When used like this:
+
+ [caption]My Caption[/caption]
+
+The output would be:
+
+ &lt;span class="caption"&gt;My Caption&lt;/span&gt;
+
+Since $content is included in the return value without any escaping or encoding, the user can include raw HTML:
+
+ [caption]&lt;a href="http://example.com/"&gt;My Caption&lt;/a&gt;[/caption]
+
+Which would produce:
+
+ &lt;span class="caption"&gt;&lt;a href="http://example.com/"&gt;My Caption&lt;/a&gt;&lt;/span&gt;
+
+This may or may not be intended behaviour - if the shortcode should not permit raw HTML in its output, it should use an escaping or filtering function to deal with it before returning the result.
+
+The shortcode parser uses a single pass on the post content.  This means that if the $content parameter of a shortcode handler contains another shortcode, it won't be parsed:
+
+ [caption]Caption: [myshortcode][/caption]
+
+This would produce:
+
+ &lt;span class="caption"&gt;Caption: [myshortcode]&lt;/span&gt;
+
+If the enclosing shortcode is intended to permit other shortcodes in its output, the handler function can call [[Function_Reference/do_shortcode|do_shortcode()]] recursively:
+
+ function caption_shortcode( $atts, $content = null ) {
+    return '&lt;span class="caption"&gt;' . do_shortcode($content) . '&lt;/span&gt;';
+ }
+
+In the previous example, this would ensure the "[myshortcode]" macro in the enclosed content is parsed, and its output enclosed by the caption span:
+
+ &lt;span class="caption"&gt;Caption: The result of myshortcode's handler function&lt;/span&gt;
+
+The parser does not handle mixing of enclosing and non-enclosing forms of the same shortcode as you would want it to. For example, if you have:
+ [myshortcode example='non-enclosing' /] non-enclosed content [myshortcode] enclosed content [/myshortcode]
+
+Instead of being treated as two shortcodes separated by the text " non-enclosed content ", the parser treats this as a single shortcode enclosing " non-enclosed content [myshortcode] enclosed content".
+
+Enclosing shortcodes support attributes in the same way as self-closing shortcodes.  Here's an example of the caption_shortcode() improved to support a 'class' attribute:
+
+ function caption_shortcode( $atts, $content = null ) {
+    extract( shortcode_atts( array(
+       'class' => 'caption',
+       ), $atts ) );
+  
+    return '&lt;span class="' . esc_attr($class) . '"&gt;' . $content . '&lt;/span&gt;';
+ }
+
+ [caption class="headline"]My Caption[/caption]
+
+ &lt;span class="headline"&gt;My Caption&lt;/span&gt;
+
+=== Other features in brief ===
+
+* The parser supports xhtml-style closing shortcodes like "[myshortcode /]", but this is optional.
+
+* Shortcode macros may use single or double quotes for attribute values, or omit them entirely if the attribute value does not contain spaces.  [myshortcode foo='123' bar=456] is equivalent to [myshortcode foo="123" bar="456"].
+
+* For backwards compatibility with older ad-hoc shortcodes, attribute names may be omitted.  If an attribute has no name it will be given a positional numeric key in the $atts array.  For example, [myshortcode 123] will produce $atts = array( 0 => 123 ).  Positional attributes may be mixed with named ones, and quotes may be used if the values contain spaces or other significant characters.
+
+* The shortcode API has test cases.  The tests -- which contain a number of examples of error cases and unusual syntax -- can be found at http://svn.automattic.com/wordpress-tests/trunk/tests/shortcode.php
+
+=== Function reference ===
+
+The following Shortcode API functions are available:
+
+ function add_shortcode($tag, $func)
+
+Registers a new shortcode handler function.  $tag is the shortcode string as written by the user (without braces), such as "myshortcode".  $func is the handler function name.
+
+Only one handler function may exist for a given shortcode.  Calling add_shortcode() again with the same $tag name will overwrite the previous handler.
+
+ function remove_shortcode($tag)
+
+Deregisters an existing shortcode.  $tag is the shortcode name as used in add_shortcode().
+
+ function remove_all_shortcodes()
+
+Deregisters all shortcodes.
+
+ function shortcode_atts($pairs, $atts)
+
+Process a raw array of attributes $atts against the set of defaults specified in $pairs.  Returns an array.  The result will contain every key from $pairs, merged with values from $atts.  Any keys in $atts that do not exist in $pairs are ignored.
+
+ function do_shortcode($content)
+
+Parse any known shortcode macros in the $content string.  Returns a string containing the original content with shortcode macros replaced by their handler functions' output.
+
+[[Function_Reference/do_shortcode|do_shortcode()]] is registered as a default filter on 'the_content' with a priority of 11.
+
+=== Limitations ===
+
+==== Nested Shortcodes ====
+
+The shortcode parser correctly deals with nested shortcode macros, provided their handler functions support it by recursively calling [[Function_Reference/do_shortcode|do_shortcode()]]:
+
+ [tag-a]
+    [tab-b]
+       [tag-c]
+    [/tag-b]
+ [/tag-a]
+
+However the parser will fail if a shortcode macro is used to enclose another macro of the same name:
+
+ [tag-a]
+    [tag-a]
+    [/tag-a]
+ [/tag-a]
+
+This is a limitation of the context-free regexp parser used by [[Function_Reference/do_shortcode|do_shortcode()]] - it is very fast but does not count levels of nesting, so it can't match each opening tag with its correct closing tag in these cases.
+
+==== Unclosed Shortcodes ====
+
+In certain cases the shortcode parser cannot correctly deal with the use of both closed and unclosed shortcodes. For instance in this case the parser will only correctly identify the second instance of the shortcode:
+
+ [tag]
+ [tag]
+    CONTENT
+ [/tag]
+
+However in this case the parser will identify both:
+
+ [tag]
+    CONTENT
+ [/tag]
+ [tag]
+
+==== Hyphens ====
+
+'''Note:''' The behavior described below involving shortcodes with hyphens ('-') still applies in WordPress 3+. This could be due to a bug in do_shortcode() or get_shortcode_regex().
+
+Take caution when using hyphens in the name of your shortcodes. In the following instance WordPress may see the second opening shortcode as equivalent to the first (basically WordPress sees the first part before the hyphen):
+
+ [tag]
+ [tag-a]
+
+It all depends on which shortcode is defined first. If you are going to use hyphens then define the shortest shortcode first.
+
+To avoid this, use an underscore or simply no separator:
+
+ [tag]
+ [tag_a]
+ 
+ [tag]
+ [taga]
+
+If the first part of the shortcode is different from one another, you can get away with using hyphens:
+
+ [tag]
+ [tagfoo-a]
+
+'''Important:''' Using hyphens can have implications that you may not be aware of; such as if other installed shortcodes also are use hyphens, the use of generic words with hyphens may cause collisions (if shortcodes are used together within the same request):
+
+ // plugin-A
+ [is-logged-in]
+ 
+ // plugin-B
+ [is-admin]
+
+==== Square Brackets ====
+
+The shortcode parser does not accept square brackets within attributes. Thus the following will fail:
+
+ [tag attribute="[Some value]"]
+
+
+'''Note:''' these limitations may change in future versions of WordPress, you should test to be absolutely sure.
+
+=== External Resources ===
+
+* [http://ran.ge/2008/04/15/wordpress-25-shortcodes/ Shortcode summary by  Aaron D. Campbell] - Explains shortcodes and gives examples including how to incorporate shortcodes into a meta box for sending them to the editor using js.
+* [http://wordpress.org/extend/plugins/iblocks/ Innovative WordPress Shortcodes In Action] - a wordpress plugin that shows you how to effectively use shortcodes to change your post content designs.
+* [http://planetozh.com/blog/2008/03/wordpress-25-shortcodes-api-overview/ WordPress Shortcode API Overview] - explanations on usage and example of plugin using shortcodes.
+* [http://wordpress.org/extend/plugins/bbcode/ Simple shortcode-powered BBCode plugin] - a simple plugin that adds support for BBCode via shortcode. A good way to see shortcodes in action.
+* [http://themocracy.com/2010/03/a-flickr-badge-using-wordpress-shortcodes/ A Flickr Badge using WordPress Shortcodes] - a demonstration of how to pass variables to shortcode handler functions.
+* [http://aaron.jorb.in/2010/wordpress-shortcodes-a-how-to-by-example/ Three Simple Sample Shortcodes] - Three Sample Shortcodes and an explanation for how they work by Aaron Jorbin.
+* [http://wptricks.net/added-permalinks-shortcode-on-wordpress/ Added Permalinks Shortcode] Simple Tutorial how to added Permalinks Shortcode on WordPress
+
+== Related ==
+
+{{Shortcode Tags}}
+
+[[Category:Advanced Topics]]
+[[Category:WordPress Development]]
+[[Category:Shortcodes]]
+[[Category:API]]
